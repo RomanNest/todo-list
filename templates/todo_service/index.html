@@ -11,7 +11,19 @@
 	{% if task_list %}
 		{% for task in task_list %}
 			<strong>{{ task.content }}</strong>
-      
+      {% if task.result %}
+        <strong class="done" style="color: green">Done</strong>
+        <form action="{% url 'todo_service:undo-task' pk=task.pk %}" method="post" style="display: inline;">
+          {% csrf_token %}
+          <button style="float: right" class="btn btn-secondary" type="submit">Undo</button>
+        </form>
+      {% else %}
+        <strong class="not-done" style="color: red">Not Done</strong>
+        <form action="{% url 'todo_service:complete-task' pk=task.pk %}" method="post" style="display: inline;">
+          {% csrf_token %}
+          <button style="float: right" class="btn btn-sm btn-success" type="submit">Complete</button>
+        </form>
+      {% endif %}
 			<p>
 				Created: {{ task.created_date }}
       	{% if task.deadline %}
