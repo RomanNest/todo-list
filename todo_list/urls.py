@@ -24,4 +24,3 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("todo_service.urls", namespace="todo_service")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
