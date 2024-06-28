@@ -49,17 +49,17 @@ class TaskDeleteView(generic.DeleteView):
     success_url = reverse_lazy("todo_service:index")
 
 
-class TaskCompleteView(generic.RedirectView):
-    def post(self, *args, **kwargs):
-        task = get_object_or_404(Task, pk=self.kwargs["pk"])
-        task.result = True
-        task.save()
-        return HttpResponseRedirect(reverse_lazy("todo_service:index"))
+class TaskCompleteUndoView(generic.UpdateView):
+    model = Task
+    fields = []
+    template_name = "todo_service/task_form.html"
+    success_url = reverse_lazy("todo_service:index")
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(Task, pk=self.kwargs.get("pk"))
 
-class TaskUndoView(generic.RedirectView):
-    def post(self, *args, **kwargs):
-        task = get_object_or_404(Task, pk=self.kwargs["pk"])
-        task.result = False
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.result = not task.result
         task.save()
-        return HttpResponseRedirect(reverse_lazy("todo_service:index"))
+        return super().form_valid(form)
