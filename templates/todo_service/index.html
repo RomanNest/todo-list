@@ -7,7 +7,7 @@
 			Add task
 		</a>
 	</h1>
-	
+
 	{% if task_list %}
 		{% for task in task_list %}
 			<strong>{{ task.content }}</strong>
@@ -30,14 +30,15 @@
         	Deadline: {{ task.deadline }}
 				{% endif %}
 			</p>
-      
-      {% for tag in task.tag.all %}
-				<p style="">
-        	Tags: {{ tag.name }}
-      {% endfor %}
-					<a href="{% url 'todo_service:task-update' pk=task.id %}">Update</a>
-					<a href="{% url 'todo_service:task-delete' pk=task.id %}">Delete</a>
-      	</p>
+			
+			<p style="">
+				Tags:
+				{% for tag in task.tag.all %}
+					 {{ tag.name }}
+				{% endfor %}
+				<a href="{% url 'todo_service:task-update' pk=task.id %}">Update</a>
+				<a href="{% url 'todo_service:task-delete' pk=task.id %}">Delete</a>
+			</p>
       <hr>
     {% endfor %}
 	{% else %}
