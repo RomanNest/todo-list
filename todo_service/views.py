@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -46,3 +47,19 @@ class TaskUpdateView(generic.UpdateView):
 class TaskDeleteView(generic.DeleteView):
     model = Task
     success_url = reverse_lazy("todo_service:index")
+
+
+class TaskCompleteView(generic.RedirectView):
+    def post(self, *args, **kwargs):
+        task = get_object_or_404(Task, pk=self.kwargs["pk"])
+        task.result = True
+        task.save()
+        return HttpResponseRedirect(reverse_lazy("todo_service:index"))
+
+
+class TaskUndoView(generic.RedirectView):
+    def post(self, *args, **kwargs):
+        task = get_object_or_404(Task, pk=self.kwargs["pk"])
+        task.result = False
+        task.save()
+        return HttpResponseRedirect(reverse_lazy("todo_service:index"))
