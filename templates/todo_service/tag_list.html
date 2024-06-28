@@ -3,7 +3,7 @@
 {% block content %}
 	<h1>
 		Tag List
-		<a style="float: right"#" class="btn btn-primary link-to-page">
+		<a style="float: right" href="{% url 'todo_service:tags-create' %}" class="btn btn-primary link-to-page">
 			Create
 		</a>
 	</h1>
@@ -20,8 +20,8 @@
 			<tr>
 				<td>{{ tag.id }}</td>
 				<td>{{ tag.name }}</td>
-				<td><a href="#" class="btn btn-secondary">UPDATE</a></td>
-				<td><a href="#" class="btn btn-secondary">DELETE</a></td>
+				<td><a href="{% url 'todo_service:tags-update' pk=tag.id %}" class="btn btn-secondary">UPDATE</a></td>
+				<td><a href="{% url 'todo_service:tags-delete' pk=tag.id %}" class="btn btn-secondary">DELETE</a></td>
 			</tr>
 		{% endfor %}
 		</table>
